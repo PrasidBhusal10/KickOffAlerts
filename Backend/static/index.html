@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KickOff Alerts — FIFA World Cup 2026 Ticket Price Tracker</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.4.0/dist/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --fifa-blue:#003087;--fifa-blue2:#001F5B;
+  --fifa-gold:#C9A84C;--fifa-gold2:#A8872D;
+  --red:#C0392B;--green:#1A6B3C;--green-bg:#EAF4EE;
+  --k:#111827;--k2:#374151;--k3:#6B7280;--k4:#9CA3AF;
+  --g:#F9FAFB;--g2:#F3F4F6;--g3:#E5E7EB;--g4:#D1D5DB;
+  --w:#FFFFFF;
+  --font:'Plus Jakarta Sans',sans-serif;
+  --r:6px;--r2:10px;--r3:14px;
+}
+body{font-family:var(--font);background:var(--g);color:var(--k);font-size:13px;min-height:100vh}
+
+/* HEADER */
+.hdr{background:var(--fifa-blue)}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid rgba(255,255,255,.1)}
+.hdr-brand{display:flex;align-items:center;gap:12px}
+.hdr-emblem{width:40px;height:40px;background:var(--fifa-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--fifa-blue);flex-shrink:0}
+.hdr-title{font-size:18px;font-weight:600;color:#fff;letter-spacing:-.2px}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px;font-weight:400}
+.hdr-right{display:flex;align-items:center;gap:12px}
+.live-badge{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:5px 14px}
+.live-dot{width:7px;height:7px;background:#4ADE80;border-radius:50%;animation:blink 1.4s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.live-badge span{font-size:11px;color:rgba(255,255,255,.85);font-weight:500}
+.clock{font-size:11px;color:rgba(255,255,255,.45);font-family:monospace}
+.hdr-nav{display:flex;gap:0;padding:0 28px}
+.nav-btn{padding:12px 16px;font-size:12px;font-weight:500;color:rgba(255,255,255,.55);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;user-select:none;white-space:nowrap}
+.nav-btn:hover{color:rgba(255,255,255,.9);background:rgba(255,255,255,.05)}
+.nav-btn.active{color:#fff;border-bottom-color:var(--fifa-gold)}
+
+
+/* ── PREMIUM NAVBAR ──────────────────────────────────────────────── */
+.hdr{background:transparent}
+
+/* Top thin ribbon */
+.ribbon{background:linear-gradient(90deg,#001F5B 0%,#003087 50%,#001F5B 100%);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 28px;color:rgba(255,255,255,.75);font-size:11px;
+  border-bottom:1px solid rgba(201,168,76,.25);position:relative}
+.ribbon::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);
+  width:140px;height:1px;background:var(--fifa-gold)}
+.ribbon-left{display:flex;align-items:center;gap:14px}
+.ribbon-pulse{display:flex;align-items:center;gap:7px}
+.ribbon-dot{width:6px;height:6px;background:#4ADE80;border-radius:50%;animation:rpulse 1.8s infinite}
+@keyframes rpulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,.55)}50%{opacity:.6;box-shadow:0 0 0 5px rgba(74,222,128,0)}}
+.ribbon-label{color:rgba(255,255,255,.9);font-weight:600;font-size:10px;letter-spacing:.6px}
+.ribbon-divider{width:1px;height:12px;background:rgba(255,255,255,.2)}
+.ribbon-right{display:flex;gap:16px;font-size:11px}
+.ribbon-right span{color:rgba(255,255,255,.55)}
+.ribbon-right strong{color:var(--fifa-gold);font-weight:600}
+.ribbon-sep{opacity:.4}
+
+/* Main navbar row */
+.navbar{background:#fff;border-bottom:1px solid var(--g3);
+  padding:0 28px;display:flex;align-items:center;height:72px;
+  position:relative}
+.navbar::after{content:'';position:absolute;bottom:-1px;left:0;width:100%;height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--fifa-gold) 30%,var(--fifa-gold) 70%,transparent 100%);
+  opacity:.35}
+
+/* Logo block */
+.logo-block{display:flex;align-items:center;gap:14px;padding-right:28px;
+  margin-right:24px;border-right:1px solid var(--g3);height:100%}
+.logo-emblem{width:46px;height:46px;background:linear-gradient(135deg,var(--fifa-blue) 0%,var(--fifa-blue2) 100%);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;flex-shrink:0}
+.logo-emblem::before{content:'';position:absolute;top:0;left:0;right:0;height:50%;
+  background:linear-gradient(180deg,rgba(255,255,255,.07) 0%,transparent 100%);pointer-events:none}
+.logo-emblem::after{content:'';position:absolute;inset:1px;border-radius:11px;
+  border:1px solid rgba(201,168,76,.35);pointer-events:none}
+.logo-text-wrap{display:flex;flex-direction:column;gap:1px}
+.logo-name{font-size:17px;font-weight:700;color:var(--fifa-blue);letter-spacing:-.4px;line-height:1}
+.logo-name em{color:var(--fifa-gold);font-style:normal}
+.logo-tagline{font-size:10.5px;color:var(--k3);letter-spacing:.3px;font-weight:500}
+
+/* Nav links */
+.nav-links{display:flex;align-items:center;gap:4px;flex:1}
+.nav-btn{display:flex;align-items:center;gap:7px;padding:9px 14px;font-size:13px;
+  font-weight:500;color:var(--k3);border-radius:8px;cursor:pointer;
+  transition:all .15s;position:relative;user-select:none;border:1px solid transparent}
+.nav-btn:hover{color:var(--fifa-blue);background:#F0F4FF}
+.nav-btn.active{color:var(--fifa-blue);background:#F0F4FF;border-color:rgba(0,48,135,.15)}
+.nav-btn.active::before{content:'';position:absolute;left:50%;bottom:-9px;
+  transform:translateX(-50%);width:24px;height:2px;background:var(--fifa-gold);border-radius:2px}
+.nav-btn i{font-size:15px;color:inherit;opacity:.8}
+.nav-badge{background:var(--fifa-gold);color:#fff;font-size:9.5px;font-weight:700;
+  padding:1px 6px;border-radius:8px;letter-spacing:.3px;margin-left:2px}
+
+/* Right side */
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-icon-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  background:#fff;border:1px solid var(--g3);border-radius:8px;color:var(--k3);
+  cursor:pointer;transition:all .15s;position:relative}
+.nav-icon-btn:hover{border-color:var(--fifa-blue);color:var(--fifa-blue);background:#F0F4FF}
+.nav-icon-btn i{font-size:16px}
+.notif-dot{position:absolute;top:7px;right:7px;width:8px;height:8px;background:var(--red);
+  border-radius:50%;border:2px solid #fff}
+.cta-btn{background:var(--fifa-blue);color:#fff;border:none;padding:0 18px;height:36px;
+  border-radius:8px;font-family:var(--font);font-size:13px;font-weight:600;
+  display:flex;align-items:center;gap:7px;cursor:pointer;transition:all .15s;
+  box-shadow:0 1px 0 rgba(201,168,76,.4),inset 0 1px 0 rgba(255,255,255,.1)}
+.cta-btn:hover{background:var(--fifa-blue2)}
+.cta-btn i{font-size:15px}
+
+/* Sub info bar */
+.sub-info{background:#fff;padding:9px 28px;border-bottom:1px solid var(--g3);
+  display:flex;align-items:center;justify-content:space-between;font-size:11.5px}
+.sub-info-left{display:flex;align-items:center;gap:14px;color:var(--k3)}
+.sub-info-pill{display:flex;align-items:center;gap:5px;padding:3px 10px;
+  background:#F0F4FF;border:1px solid rgba(0,48,135,.08);border-radius:20px;
+  color:var(--fifa-blue);font-weight:500;font-size:11px}
+.sub-info-pill i{font-size:12px}
+.sub-info-right{display:flex;gap:12px;color:var(--k3);font-family:var(--font)}
+.sub-info-right strong{color:var(--fifa-blue);font-weight:600}
+
+@media(max-width:860px){
+  .nav-links{display:none}
+  .logo-tagline{display:none}
+  .ribbon-right{display:none}
+  .sub-info-right{display:none}
+  .navbar{padding:0 16px;height:60px}
+  .ribbon{padding:6px 14px;font-size:10px}
+  .sub-info{padding:8px 16px}
+  .logo-block{padding-right:0;margin-right:0;border-right:none}
+}
+
+/* STAT STRIP */
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid var(--g3)}
+.stat-cell{background:var(--w);padding:14px 22px;border-right:1px solid var(--g3)}
+.stat-cell:last-child{border-right:none}
+.stat-n{font-size:26px;font-weight:600;color:var(--fifa-blue);line-height:1;margin-bottom:3px}
+.stat-n em{color:var(--fifa-gold);font-style:normal}
+.stat-l{font-size:11px;color:var(--k3);font-weight:400}
+
+/* PAGE */
+.page{padding:22px 28px;display:none}
+.page.active{display:block}
+
+/* SECTION HEADER */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.sec-title{font-size:15px;font-weight:600;color:var(--k)}
+.sec-sub{font-size:12px;color:var(--k3)}
+
+/* GROUP BLOCKS */
+.group-block{margin-bottom:18px}
+.group-label{font-size:11px;font-weight:600;color:var(--fifa-blue);letter-spacing:.6px;text-transform:uppercase;padding:8px 14px 8px 16px;background:rgba(0,48,135,.06);border-left:3px solid var(--fifa-blue);border-radius:var(--r) var(--r) 0 0}
+
+/* MATCH TABLE */
+.match-table{background:var(--w);border:1px solid var(--g3);border-top:none;border-radius:0 0 var(--r2) var(--r2);overflow:hidden}
+.match-thead{display:grid;grid-template-columns:2.2fr .7fr 100px 100px 80px 90px;background:var(--g2);border-bottom:1px solid var(--g3)}
+.th{font-size:11px;font-weight:500;color:var(--k3);padding:8px 12px;letter-spacing:.2px}
+.match-row{display:grid;grid-template-columns:2.2fr .7fr 100px 100px 80px 90px;border-top:1px solid var(--g3);cursor:pointer;transition:background .1s}
+.match-row:hover{background:#F5F7FF}
+.match-row.selected{background:#EEF2FF;border-left:3px solid var(--fifa-blue)}
+.td{padding:11px 12px;display:flex;align-items:center;font-size:13px}
+.match-name{font-weight:500;color:var(--k);font-size:13px}
+.match-meta{font-size:11px;color:var(--k3);margin-top:2px}
+.price-val{font-size:14px;font-weight:600;color:var(--k)}
+.avg-val{font-size:13px;color:var(--k3)}
+.chg-up{font-size:11px;font-weight:600;color:var(--red)}
+.chg-dn{font-size:11px;font-weight:600;color:var(--green)}
+.chg-fl{font-size:11px;color:var(--k4)}
+.set-btn{font-size:11px;font-weight:500;padding:5px 13px;background:var(--fifa-blue);color:#fff;border:none;border-radius:var(--r);cursor:pointer;transition:background .12s;white-space:nowrap}
+.set-btn:hover{background:var(--fifa-blue2)}
+.set-btn.armed{background:var(--fifa-gold);color:var(--fifa-blue)}
+.loading-row{padding:28px;text-align:center;font-size:12px;color:var(--k4)}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* CARD */
+.card{background:var(--w);border:1px solid var(--g3);border-radius:var(--r2);overflow:hidden}
+.card-hdr{padding:16px 20px;border-bottom:1px solid var(--g3);background:var(--fifa-blue)}
+.card-hdr-title{font-size:14px;font-weight:600;color:#fff}
+.card-hdr-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px}
+.card-body{padding:20px}
+
+/* FORM */
+.field{margin-bottom:14px}
+.field-label{font-size:11px;font-weight:500;color:var(--k2);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:.4px}
+.field input,.field select{width:100%;border:1px solid var(--g4);background:var(--w);font-family:var(--font);font-size:13px;padding:9px 12px;color:var(--k);outline:none;border-radius:var(--r);transition:all .12s}
+.field input:focus,.field select:focus{border-color:var(--fifa-blue);box-shadow:0 0 0 3px rgba(0,48,135,.08)}
+.range-display{font-size:30px;font-weight:600;color:var(--fifa-blue);line-height:1;margin-bottom:10px}
+.range-display em{color:var(--fifa-gold);font-style:normal}
+.dual-range{position:relative;height:28px;margin-bottom:4px}
+.dual-range input[type=range]{position:absolute;width:100%;height:4px;background:none;pointer-events:none;-webkit-appearance:none;appearance:none;top:50%;transform:translateY(-50%);margin:0}
+.dual-range input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:var(--fifa-blue);cursor:pointer;pointer-events:all;border:2.5px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2);border-radius:50%}
+.dual-range input[type=range]:focus::-webkit-slider-thumb{background:var(--fifa-blue2)}
+.range-track{position:absolute;top:50%;transform:translateY(-50%);height:4px;width:100%;background:var(--g3);border-radius:2px}
+.range-fill{position:absolute;top:50%;transform:translateY(-50%);height:4px;background:var(--fifa-blue);border-radius:2px}
+.range-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--k4);margin-top:3px}
+.submit-btn{width:100%;background:var(--fifa-blue);color:#fff;border:none;font-family:var(--font);font-size:14px;font-weight:600;padding:12px 18px;border-radius:var(--r);cursor:pointer;transition:background .12s;margin-top:8px}
+.submit-btn:hover{background:var(--fifa-blue2)}
+.submit-btn:disabled{background:var(--k4);cursor:not-allowed}
+
+/* STEPS */
+.step{display:flex;gap:14px;padding:14px 20px;border-bottom:1px solid var(--g3);align-items:flex-start}
+.step:last-child{border-bottom:none}
+.step-num{width:28px;height:28px;background:var(--fifa-blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px}
+.step-title{font-size:13px;font-weight:500;color:var(--k);margin-bottom:3px}
+.step-desc{font-size:12px;color:var(--k3);line-height:1.65}
+
+/* MY ALERTS */
+.at-table{background:var(--w);border:1px solid var(--g3);border-radius:var(--r2);overflow:hidden}
+.at-head{display:grid;grid-template-columns:2fr 80px 80px 90px 70px;background:var(--g2);border-bottom:1px solid var(--g3)}
+.at-row{display:grid;grid-template-columns:2fr 80px 80px 90px 70px;border-top:1px solid var(--g3)}
+.at-row:hover{background:var(--g)}
+.at-cell{padding:10px 12px;font-size:12px;display:flex;align-items:center}
+.chip{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500}
+.chip-watch{background:rgba(0,48,135,.08);color:var(--fifa-blue)}
+.chip-hit{background:#FEE2E2;color:var(--red)}
+.del-btn{background:none;border:1px solid var(--g4);font-family:var(--font);font-size:11px;padding:3px 10px;cursor:pointer;color:var(--k3);border-radius:var(--r);transition:all .12s}
+.del-btn:hover{border-color:var(--red);color:var(--red)}
+.empty{padding:32px;text-align:center;font-size:12px;color:var(--k4);border:1px dashed var(--g4);border-radius:var(--r2)}
+
+/* EMAIL PREVIEW */
+.em-shell{background:var(--w);border:1px solid var(--g3);border-radius:var(--r2);overflow:hidden;max-width:520px}
+.em-hdr{background:var(--fifa-blue);padding:16px 20px}
+.em-hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.em-brand{display:flex;align-items:center;gap:8px}
+.em-emblem{width:28px;height:28px;background:var(--fifa-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--fifa-blue)}
+.em-brand-name{font-size:14px;font-weight:600;color:#fff}
+.em-alert-badge{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;background:rgba(201,168,76,.2);color:var(--fifa-gold);letter-spacing:.3px}
+.em-subject{font-size:13px;font-weight:500;color:rgba(255,255,255,.9)}
+.em-meta{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px}
+.em-gold-bar{height:3px;background:linear-gradient(90deg,var(--fifa-gold2),var(--fifa-gold),var(--fifa-gold2))}
+.em-body{padding:20px}
+.em-headline{font-size:18px;font-weight:600;color:var(--k);margin-bottom:4px;line-height:1.3}
+.em-sub{font-size:12px;color:var(--k3);margin-bottom:14px}
+.em-prices{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--g3);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
+.em-price-cell{padding:12px 14px;background:var(--w)}
+.em-price-cell:first-child{border-right:1px solid var(--g3)}
+.em-price-label{font-size:10px;font-weight:500;color:var(--k3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.em-price-val{font-size:22px;font-weight:700;line-height:1}
+.em-data{border:1px solid var(--g3);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
+.em-data-row{display:flex;justify-content:space-between;padding:8px 13px;border-bottom:1px solid var(--g3);font-size:12px}
+.em-data-row:last-child{border-bottom:none}
+.em-data-label{color:var(--k3)}
+.em-data-val{font-weight:500;color:var(--k)}
+.em-note{font-size:11px;color:var(--k3);border-left:3px solid var(--fifa-gold);padding-left:10px;line-height:1.7;margin-bottom:14px;border-radius:0}
+.em-cta{display:block;background:var(--fifa-blue);color:#fff;text-align:center;font-size:13px;font-weight:600;padding:13px;border-radius:var(--r);text-decoration:none;letter-spacing:.2px}
+.em-cta:hover{background:var(--fifa-blue2)}
+.em-footer{border-top:1px solid var(--g3);padding:10px 20px;background:var(--g);display:flex;justify-content:space-between;font-size:11px;color:var(--k4)}
+
+/* TOAST */
+.toast{font-size:12px;padding:10px 13px;border-radius:var(--r);margin-top:11px;display:none;align-items:center;gap:8px;line-height:1.5}
+.toast.show{display:flex}
+.toast.ok{background:var(--green-bg);color:var(--green);border:1px solid #A7F3D0}
+.toast.err{background:#FEE2E2;color:var(--red);border:1px solid #FCA5A5}
+
+/* SPINNER */
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid var(--g3);border-top-color:var(--fifa-blue);border-radius:50%;animation:spin .65s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+
+/* REVIEWS */
+.reviews-layout{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
+.reviews-grid{display:flex;flex-direction:column;gap:12px}
+.review-card{background:var(--w);border:1px solid var(--g3);border-radius:var(--r2);padding:18px;transition:box-shadow .15s}
+.review-card:hover{box-shadow:0 4px 16px rgba(0,48,135,.07)}
+.review-card.is-demo{border-left:3px solid var(--fifa-gold)}
+.review-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.reviewer{display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#fff;flex-shrink:0}
+.reviewer-name{font-size:13px;font-weight:600;color:var(--k)}
+.reviewer-date{font-size:11px;color:var(--k3);margin-top:1px}
+.stars{display:flex;gap:2px;font-size:14px}
+.star-filled{color:var(--fifa-gold)}
+.star-empty{color:var(--g4)}
+.review-text{font-size:13px;color:var(--k2);line-height:1.75;margin-bottom:10px}
+.review-match-tag{font-size:11px;color:var(--fifa-blue);background:rgba(0,48,135,.07);padding:3px 10px;border-radius:20px;font-weight:500;display:inline-block}
+.demo-chip{font-size:10px;color:var(--fifa-gold);font-weight:600;letter-spacing:.4px;text-transform:uppercase;background:rgba(201,168,76,.1);padding:2px 8px;border-radius:20px}
+.summary-card{background:var(--w);border:1px solid var(--g3);border-radius:var(--r2);padding:20px;margin-bottom:14px}
+.summary-title{font-size:13px;font-weight:600;color:var(--k);margin-bottom:14px}
+.summary-score-row{display:flex;align-items:center;gap:16px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--g3)}
+.big-score{font-size:48px;font-weight:700;color:var(--fifa-blue);line-height:1}
+.score-detail{}
+.score-stars{color:var(--fifa-gold);font-size:16px;margin-bottom:2px}
+.score-count{font-size:11px;color:var(--k3)}
+.bar-rows{display:flex;flex-direction:column;gap:6px}
+.bar-row{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--k3)}
+.bar-lbl{width:24px;text-align:right}
+.bar-track{flex:1;height:5px;background:var(--g3);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;background:var(--fifa-gold);border-radius:3px;transition:width .5s}
+.bar-count{width:20px;font-size:11px;color:var(--k3)}
+.form-card{background:var(--w);border:1px solid var(--g3);border-radius:var(--r2);overflow:hidden}
+.form-card-hdr{background:var(--fifa-blue);padding:14px 18px}
+.form-card-hdr-title{font-size:14px;font-weight:600;color:#fff}
+.form-card-hdr-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px}
+.form-card-body{padding:18px;display:flex;flex-direction:column;gap:13px}
+.star-picker{display:flex;gap:6px;margin-top:3px}
+.star-pick-btn{font-size:24px;cursor:pointer;color:var(--g4);transition:color .1s;background:none;border:none;padding:0;line-height:1}
+.star-pick-btn.lit,.star-pick-btn:hover{color:var(--fifa-gold)}
+.char-count{font-size:11px;color:var(--k4);text-align:right;margin-top:3px}
+.review-submit-btn{width:100%;background:var(--fifa-blue);color:#fff;border:none;font-family:var(--font);font-size:13px;font-weight:600;padding:11px;border-radius:var(--r);cursor:pointer;transition:background .12s}
+.review-submit-btn:hover{background:var(--fifa-blue2)}
+.review-submit-btn:disabled{background:var(--k4);cursor:not-allowed}
+
+@media(max-width:860px){
+  .two-col{grid-template-columns:1fr}
+  .stat-strip{grid-template-columns:1fr 1fr}
+  .stat-cell:nth-child(2){border-right:none}
+  .stat-cell:nth-child(3){border-top:1px solid var(--g3)}
+  .match-thead,.match-row{grid-template-columns:2fr .7fr 90px 80px}
+  .match-thead .th:nth-child(4),.match-row .td:nth-child(4),
+  .match-thead .th:nth-child(5),.match-row .td:nth-child(5){display:none}
+  .page{padding:16px}
+  .hdr-top{padding:12px 16px}
+  .hdr-nav{padding:0 16px}
+  .hdr-title{font-size:16px}
+}
+
+/* HERO BANNER */
+.hero-banner{position:relative;width:100%;height:340px;overflow:hidden;background:radial-gradient(ellipse at center top,#001F5B 0%,#000F3D 80%);margin-bottom:0;border-bottom:1px solid var(--g3)}
+.stadium-glow{position:absolute;top:50%;left:50%;width:120%;height:280px;transform:translate(-50%,-40%);background:radial-gradient(ellipse at center,rgba(0,48,135,.5) 0%,transparent 65%);pointer-events:none}
+.field-stripes{position:absolute;bottom:0;left:0;width:100%;height:80px;background:repeating-linear-gradient(90deg,#0B5C2E 0px,#0B5C2E 40px,#0F6E37 40px,#0F6E37 80px);opacity:.45}
+.field-stripes::before{content:'';position:absolute;top:0;left:0;width:100%;height:30px;background:linear-gradient(to bottom,#000F3D,transparent)}
+.spotlight{position:absolute;top:-20px;width:300px;height:200px;background:radial-gradient(ellipse at top,rgba(120,180,255,.18) 0%,transparent 70%);pointer-events:none}
+.spotlight-l{left:-50px;transform:rotate(-15deg)}
+.spotlight-r{right:-50px;transform:rotate(15deg)}
+.flag-ticker{position:absolute;top:0;left:0;width:100%;height:54px;background:rgba(0,15,61,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(201,168,76,.3);overflow:hidden;z-index:5}
+.flag-ticker::before,.flag-ticker::after{content:'';position:absolute;top:0;width:80px;height:100%;z-index:2;pointer-events:none}
+.flag-ticker::before{left:0;background:linear-gradient(to right,#000F3D,transparent)}
+.flag-ticker::after{right:0;background:linear-gradient(to left,#000F3D,transparent)}
+.flag-track{display:flex;gap:32px;align-items:center;height:100%;padding:0 20px;animation:scrollFlags 60s linear infinite;width:max-content}
+@keyframes scrollFlags{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.flag-item{display:flex;align-items:center;gap:8px;flex-shrink:0;color:#fff;white-space:nowrap;font-size:13px;font-weight:500;letter-spacing:.2px}
+.flag-emoji{font-size:24px;line-height:1}
+.hero-content{position:relative;z-index:3;padding:74px 32px 32px;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%}
+.hero-eyebrow{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;color:#E5C870;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px}
+.hero-eyebrow-line{width:24px;height:1px;background:var(--fifa-gold)}
+.hero-title{font-size:42px;font-weight:700;color:#fff;letter-spacing:-1px;line-height:1;margin-bottom:6px;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.hero-title span{color:#E5C870;font-weight:600}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.7);margin-bottom:24px;letter-spacing:.3px;text-align:center}
+.countdown{display:flex;gap:14px;align-items:center}
+.cd-unit{display:flex;flex-direction:column;align-items:center;background:rgba(0,15,61,.5);border:1px solid rgba(201,168,76,.35);padding:10px 16px;min-width:74px;border-radius:8px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.cd-num{font-size:30px;font-weight:700;color:#E5C870;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.cd-label{font-size:10px;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:1.2px;font-weight:500;margin-top:4px}
+.cd-sep{color:var(--fifa-gold);font-size:24px;font-weight:300;align-self:center;margin:0 -4px;opacity:.4}
+.orb{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--fifa-gold);box-shadow:0 0 12px #E5C870;animation:orbPulse 2.5s infinite ease-in-out;z-index:2}
+.orb-1{top:120px;left:10%;animation-delay:0s}
+.orb-2{top:200px;right:12%;animation-delay:1s}
+.orb-3{bottom:100px;left:18%;animation-delay:2s}
+@keyframes orbPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.5)}}
+@media(max-width:860px){
+  .hero-banner{height:300px}
+  .hero-title{font-size:30px}
+  .hero-sub{font-size:11px;padding:0 16px}
+  .cd-unit{min-width:58px;padding:8px 10px}
+  .cd-num{font-size:22px}
+  .cd-label{font-size:9px}
+  .countdown{gap:8px}
+}
+
+</style>
+</head>
+<body>
+
+<div class="ribbon">
+  <div class="ribbon-left">
+    <div class="ribbon-pulse">
+      <span class="ribbon-dot"></span>
+      <span class="ribbon-label">LIVE PRICES</span>
+    </div>
+    <div class="ribbon-divider"></div>
+    <span>Updates every 15 minutes · 104 matches tracked</span>
+  </div>
+  <div class="ribbon-right">
+    <span><strong id="ribbon-days">--</strong> days until kickoff</span>
+    <span class="ribbon-sep">|</span>
+    <span id="utc-clock">--:--:-- UTC</span>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="logo-block">
+    <div class="logo-emblem">
+      <svg viewBox="0 0 32 32" style="width:28px;height:28px">
+        <path d="M9 4 Q9 3 10 3 L22 3 Q23 3 23 4 L23 7 Q23 9 21 10 L11 10 Q9 9 9 7 Z" fill="#C9A84C"/>
+        <ellipse cx="16" cy="6.5" rx="6" ry="2" fill="none" stroke="#003087" stroke-width="0.4" opacity="0.6"/>
+        <line x1="13" y1="4" x2="13" y2="9.5" stroke="#003087" stroke-width="0.4" opacity="0.5"/>
+        <line x1="16" y1="3.5" x2="16" y2="10" stroke="#003087" stroke-width="0.4" opacity="0.5"/>
+        <line x1="19" y1="4" x2="19" y2="9.5" stroke="#003087" stroke-width="0.4" opacity="0.5"/>
+        <path d="M11 10 Q10.5 14 11 17 Q12 19 13.5 20 L18.5 20 Q20 19 21 17 Q21.5 14 21 10 Z" fill="#C9A84C"/>
+        <path d="M11 11 Q7 11 7 14 Q7 16.5 10 17" stroke="#C9A84C" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <path d="M21 11 Q25 11 25 14 Q25 16.5 22 17" stroke="#C9A84C" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <rect x="14.5" y="20" width="3" height="3" fill="#C9A84C"/>
+        <rect x="12" y="23" width="8" height="1.8" rx="0.4" fill="#C9A84C"/>
+        <rect x="10" y="24.8" width="12" height="2.5" rx="0.4" fill="#C9A84C"/>
+      </svg>
+    </div>
+    <div class="logo-text-wrap">
+      <div class="logo-name">KickOff<em>Alerts</em></div>
+      <div class="logo-tagline">World Cup 2026 · Price Tracker</div>
+    </div>
+  </div>
+
+  <div class="nav-links">
+    <div class="nav-btn active" id="tab-prices"   onclick="showTab('prices')"><i class="ti ti-activity" aria-hidden="true"></i>Live prices</div>
+    <div class="nav-btn"        id="tab-alert"    onclick="showTab('alert')"><i class="ti ti-bell-plus" aria-hidden="true"></i>Set alert</div>
+    <div class="nav-btn"        id="tab-myalerts" onclick="showTab('myalerts')"><i class="ti ti-bookmark" aria-hidden="true"></i>My alerts</div>
+    <div class="nav-btn"        id="tab-email"    onclick="showTab('email')"><i class="ti ti-mail" aria-hidden="true"></i>Email preview</div>
+    <div class="nav-btn"        id="tab-reviews"  onclick="showTab('reviews')"><i class="ti ti-star" aria-hidden="true"></i>Reviews</div>
+  </div>
+
+  <div class="nav-right">
+    <button class="nav-icon-btn" aria-label="Notifications" onclick="showTab('myalerts')">
+      <i class="ti ti-bell" aria-hidden="true"></i>
+    </button>
+    <button class="cta-btn" onclick="showTab('alert')">
+      <i class="ti ti-bolt" aria-hidden="true"></i>
+      Set alert
+    </button>
+  </div>
+</nav>
+
+<div class="sub-info">
+  <div class="sub-info-left">
+    <div class="sub-info-pill"><i class="ti ti-circle-check" aria-hidden="true"></i>System operational</div>
+    <span>Last fetch: <strong id="last-fetch-pill" style="color:var(--fifa-blue);font-weight:600">just now</strong></span>
+  </div>
+  <div class="sub-info-right">
+    <span>Lowest today: <strong>$<span id="sub-low">--</span></strong></span>
+    <span class="ribbon-sep">|</span>
+    <span>Active alerts: <strong id="sub-alerts">0</strong></span>
+  </div>
+</div>
+    <div class="hdr-right">
+      <div class="live-badge">
+        <div class="live-dot"></div>
+        <span>Live · updates every 15 min</span>
+      </div>
+      <div class="clock" id="utc-clock">--:--:-- UTC</div>
+    </div>
+  </div>
+  <div class="hdr-nav">
+    <div class="nav-btn active" id="tab-prices"   onclick="showTab('prices')">Live prices</div>
+    <div class="nav-btn"        id="tab-alert"    onclick="showTab('alert')">Set alert</div>
+    <div class="nav-btn"        id="tab-myalerts" onclick="showTab('myalerts')">My alerts</div>
+    <div class="nav-btn"        id="tab-email"    onclick="showTab('email')">Email preview</div>
+    <div class="nav-btn"        id="tab-reviews"  onclick="showTab('reviews')">Reviews</div>
+  </div>
+</div>
+
+
+<!-- HERO BANNER -->
+<div class="hero-banner">
+  <div class="stadium-glow"></div>
+  <div class="spotlight spotlight-l"></div>
+  <div class="spotlight spotlight-r"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="field-stripes"></div>
+
+  <div class="flag-ticker">
+    <div class="flag-track" id="flagTrack"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span>FIFA World Cup 2026 — The Countdown Is On</span>
+      <div class="hero-eyebrow-line"></div>
+    </div>
+    <div class="hero-title">Until the world <span>kicks off</span></div>
+    <div class="hero-sub">Opening match · Mexico vs South Africa · Estadio Azteca · Thursday, June 11, 2026</div>
+    <div class="countdown">
+      <div class="cd-unit"><div class="cd-num" id="cd-d">--</div><div class="cd-label">Days</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-num" id="cd-h">--</div><div class="cd-label">Hours</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-num" id="cd-m">--</div><div class="cd-label">Minutes</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-num" id="cd-s">--</div><div class="cd-label">Seconds</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="stat-strip">
+  <div class="stat-cell">
+    <div class="stat-n">10<em>4</em></div>
+    <div class="stat-l">Matches tracked</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n"><em>$</em><span id="stat-low">--</span></div>
+    <div class="stat-l">Lowest price live</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n">15<em>m</em></div>
+    <div class="stat-l">Update interval</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n" id="stat-alerts">0</div>
+    <div class="stat-l">Your active alerts</div>
+  </div>
+</div>
+
+<!-- PRICES TAB -->
+<div class="page active" id="page-prices">
+  <div class="sec-hdr">
+    <div class="sec-title">Confirmed Group Stage Fixtures</div>
+    <div class="sec-sub">Last updated: <span id="last-fetch">--</span></div>
+  </div>
+  <div id="match-sections"></div>
+</div>
+
+<!-- SET ALERT TAB -->
+<div class="page" id="page-alert">
+  <div class="two-col">
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-hdr-title">Configure price alert</div>
+        <div class="card-hdr-sub">Get emailed the instant a ticket hits your budget</div>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label class="field-label">Email address</label>
+          <input type="email" id="f-email" placeholder="your@email.com">
+        </div>
+        <div class="field">
+          <label class="field-label">Match</label>
+          <select id="f-match"><option value="">Select a match...</option></select>
+        </div>
+        <div class="field">
+          <label class="field-label">Ticket category</label>
+          <select id="f-cat">
+            <option>Any category</option>
+            <option>Category 1 — Premium</option>
+            <option>Category 2 — Standard</option>
+            <option>Category 3 — Value</option>
+            <option>Category 4 — Budget</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Price range</label>
+          <div class="range-display">$<em id="rmin-out">100</em> — $<em id="rmax-out">400</em></div>
+          <div class="dual-range">
+            <div class="range-track"></div>
+            <div class="range-fill" id="rfill"></div>
+            <input type="range" id="rmin" min="60" max="2500" value="100" step="10">
+            <input type="range" id="rmax" min="60" max="2500" value="400" step="10">
+          </div>
+          <div class="range-ends"><span>$60</span><span>$2,500+</span></div>
+        </div>
+        <button class="submit-btn" id="submit-btn" onclick="createAlert()">Create price alert</button>
+        <div class="toast" id="form-toast"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-hdr-title">How it works</div>
+        <div class="card-hdr-sub">Four steps to never miss a deal</div>
+      </div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div><div class="step-title">Alert created instantly</div><div class="step-desc">You receive a confirmation email right away. No account or password needed.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div><div class="step-title">We monitor 24/7 every 15 minutes</div><div class="step-desc">Our system checks prices across FIFA Collect and resale markets around the clock.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div><div class="step-title">Price drops into your range</div><div class="step-desc">The moment any ticket hits your budget, the alert fires within 15 minutes.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div><div class="step-title">Instant email with direct link</div><div class="step-desc">One click takes you straight to the listing — no searching, no wasted time.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MY ALERTS TAB -->
+<div class="page" id="page-myalerts">
+  <div class="sec-hdr"><div class="sec-title">My alerts</div></div>
+  <div style="display:flex;gap:8px;margin-bottom:16px;align-items:flex-end">
+    <div style="flex:1">
+      <label class="field-label" style="font-size:11px;font-weight:500;color:var(--k2);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px">Your email address</label>
+      <input type="email" id="lookup-email" placeholder="your@email.com"
+        onkeydown="if(event.key==='Enter')loadMyAlerts()"
+        style="border:1px solid var(--g4);background:var(--w);font-family:var(--font);font-size:13px;padding:9px 12px;color:var(--k);outline:none;border-radius:var(--r);width:100%;transition:all .12s"
+        onfocus="this.style.borderColor='var(--fifa-blue)';this.style.boxShadow='0 0 0 3px rgba(0,48,135,.08)'"
+        onblur="this.style.borderColor='var(--g4)';this.style.boxShadow='none'">
+    </div>
+    <button onclick="loadMyAlerts()"
+      style="background:var(--fifa-blue);color:#fff;border:none;font-family:var(--font);font-size:12px;font-weight:500;padding:0 20px;border-radius:var(--r);cursor:pointer;height:38px;transition:background .12s;white-space:nowrap"
+      onmouseover="this.style.background='var(--fifa-blue2)'"
+      onmouseout="this.style.background='var(--fifa-blue)'">
+      Load alerts
+    </button>
+  </div>
+  <div id="my-alerts-wrap">
+    <div class="empty">Enter your email above to view your saved alerts</div>
+  </div>
+</div>
+
+<!-- EMAIL PREVIEW TAB -->
+<div class="page" id="page-email">
+  <div class="sec-hdr" style="margin-bottom:16px">
+    <div class="sec-title">Sample notification email</div>
+    <div class="sec-sub">This is exactly what you receive when a price drops into your range</div>
+  </div>
+  <div class="em-shell">
+    <div class="em-hdr">
+      <div class="em-hdr-row">
+        <div class="em-brand">
+          <div class="em-emblem"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px">
+  <path d="M8 3h8v5c0 2.5-1.8 4.5-4 4.5S8 10.5 8 8V3z" fill="#003087"/>
+  <path d="M8 5c-1.5 0-2.5 1-2.5 2.5S6.5 10 8 10" stroke="#003087" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  <path d="M16 5c1.5 0 2.5 1 2.5 2.5S17.5 10 16 10" stroke="#003087" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  <rect x="11" y="12.5" width="2" height="3" fill="#003087"/>
+  <rect x="9" y="15" width="6" height="1.5" rx="0.3" fill="#003087"/>
+  <rect x="8" y="16.5" width="8" height="2" rx="0.3" fill="#003087"/>
+</svg></div>
+          <div class="em-brand-name">KickOff Alerts</div>
+        </div>
+        <span class="em-alert-badge">PRICE ALERT</span>
+      </div>
+      <div class="em-subject">Mexico vs South Africa — tickets dropped to $89</div>
+      <div class="em-meta">Triggered today at 14:32 UTC · Group A · Match 1 of 104</div>
+    </div>
+    <div class="em-gold-bar"></div>
+    <div class="em-body">
+      <div class="em-headline">Mexico vs South Africa</div>
+      <div class="em-sub">A ticket just entered your price range — act fast before it sells out</div>
+      <div class="em-prices">
+        <div class="em-price-cell">
+          <div class="em-price-label">Current lowest price</div>
+          <div class="em-price-val" style="color:var(--green)">$89</div>
+        </div>
+        <div class="em-price-cell">
+          <div class="em-price-label">Your alert range</div>
+          <div class="em-price-val" style="color:var(--fifa-blue)">$75–$150</div>
+        </div>
+      </div>
+      <div class="em-data">
+        <div class="em-data-row"><span class="em-data-label">Venue</span><span class="em-data-val">Estadio Azteca, Mexico City</span></div>
+        <div class="em-data-row"><span class="em-data-label">Date</span><span class="em-data-val">June 11, 2026 · 20:00 local</span></div>
+        <div class="em-data-row"><span class="em-data-label">Stage</span><span class="em-data-val">Group A — Match 1</span></div>
+        <div class="em-data-row"><span class="em-data-label">Listings available</span><span class="em-data-val">34 tickets</span></div>
+      </div>
+      <div class="em-note">Prices at this level typically sell out within minutes.<br>Click below to view available tickets and book immediately.</div>
+      <a class="em-cta" href="#">View tickets and book now →</a>
+    </div>
+    <div class="em-footer">
+      <span>KickOff Alerts · FIFA World Cup 2026</span>
+      <span>Unsubscribe · Manage alerts</span>
+    </div>
+  </div>
+  <div style="font-size:12px;color:var(--k3);margin-top:12px;line-height:1.8">
+    Every notification includes the exact trigger price, your range, venue, date,<br>
+    listings count, and a direct booking link — one click to buy, no searching.
+  </div>
+</div>
+
+<script>
+const API = '';
+
+/* ── HERO BANNER: FLAG TICKER + COUNTDOWN ─────────────────────────── */
+const NATIONS = [
+  ['🇲🇽','Mexico'],['🇨🇦','Canada'],['🇺🇸','USA'],['🇧🇷','Brazil'],['🇦🇷','Argentina'],
+  ['🇫🇷','France'],['🏴󠁧󠁢󠁥󠁮󠁧󠁿','England'],['🇪🇸','Spain'],['🇩🇪','Germany'],['🇵🇹','Portugal'],
+  ['🇳🇱','Netherlands'],['🇧🇪','Belgium'],['🇭🇷','Croatia'],['🇨🇭','Switzerland'],['🇦🇹','Austria'],
+  ['🇳🇴','Norway'],['🇯🇵','Japan'],['🇰🇷','South Korea'],['🇦🇺','Australia'],['🇮🇷','Iran'],
+  ['🇸🇦','Saudi Arabia'],['🇶🇦','Qatar'],['🇲🇦','Morocco'],['🇸🇳','Senegal'],['🇨🇮','Ivory Coast'],
+  ['🇿🇦','South Africa'],['🇬🇭','Ghana'],['🇪🇬','Egypt'],['🇩🇿','Algeria'],['🇹🇳','Tunisia'],
+  ['🇨🇴','Colombia'],['🇺🇾','Uruguay'],['🇪🇨','Ecuador'],['🇵🇾','Paraguay'],['🇵🇦','Panama'],
+  ['🇭🇹','Haiti'],['🇨🇷','Costa Rica'],['🇨🇻','Cape Verde'],['🇸🇨','Scotland'],['🇳🇿','New Zealand'],
+  ['🇯🇴','Jordan'],['🇺🇿','Uzbekistan']
+];
+(function buildTicker() {
+  const track = document.getElementById('flagTrack');
+  if (!track) return;
+  const allFlags = [...NATIONS, ...NATIONS];
+  track.innerHTML = allFlags.map(([flag, name]) =>
+    `<div class="flag-item"><span class="flag-emoji">${flag}</span><span>${name}</span></div>`
+  ).join('');
+})();
+
+const KICKOFF = new Date('2026-06-11T20:00:00-06:00').getTime();
+function pad(n) { return String(Math.max(0, n)).padStart(2, '0'); }
+function tickCountdown() {
+  const diff = KICKOFF - Date.now();
+  const d = document.getElementById('cd-d');
+  if (!d) return;
+  if (diff <= 0) {
+    document.getElementById('cd-d').textContent = '00';
+    document.getElementById('cd-h').textContent = '00';
+    document.getElementById('cd-m').textContent = '00';
+    document.getElementById('cd-s').textContent = '00';
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hrs  = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+  const secs = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-d').textContent = pad(days);
+  const rd = document.getElementById('ribbon-days');
+  if (rd) rd.textContent = days;
+  document.getElementById('cd-h').textContent = pad(hrs);
+  document.getElementById('cd-m').textContent = pad(mins);
+  document.getElementById('cd-s').textContent = pad(secs);
+}
+tickCountdown();
+setInterval(tickCountdown, 1000);
+
+
+
+const GROUPS = [
+  {label:"Group A", matches:[
+    {id:1,  name:"Mexico vs South Africa",       venue:"Estadio Azteca · Mexico City",      date:"Jun 11", price:312, avg:380, chg:+18},
+    {id:2,  name:"Korea Republic vs Czech Republic", venue:"Estadio Akron · Zapopan",        date:"Jun 11", price:178, avg:220, chg:-5},
+    {id:3,  name:"Mexico vs Korea Republic",     venue:"Estadio Akron · Zapopan",            date:"Jun 15", price:290, avg:345, chg:+12},
+    {id:4,  name:"South Africa vs Czech Republic", venue:"Estadio Akron · Zapopan",          date:"Jun 19", price:145, avg:188, chg:0},
+  ]},
+  {label:"Group B", matches:[
+    {id:5,  name:"Canada vs Bosnia",             venue:"BMO Field · Toronto",                date:"Jun 12", price:220, avg:275, chg:+8},
+    {id:6,  name:"Qatar vs Switzerland",         venue:"BC Place · Vancouver",               date:"Jun 12", price:160, avg:198, chg:-3},
+    {id:7,  name:"Canada vs Qatar",              venue:"BC Place · Vancouver",               date:"Jun 17", price:195, avg:245, chg:+5},
+    {id:8,  name:"Switzerland vs Bosnia",        venue:"BMO Field · Toronto",                date:"Jun 21", price:175, avg:215, chg:0},
+  ]},
+  {label:"Group C", matches:[
+    {id:9,  name:"Brazil vs Morocco",            venue:"MetLife Stadium · New York",         date:"Jun 13", price:520, avg:640, chg:+35},
+    {id:10, name:"Haiti vs Scotland",            venue:"SoFi Stadium · Los Angeles",         date:"Jun 13", price:148, avg:185, chg:-8},
+    {id:11, name:"Brazil vs Haiti",              venue:"SoFi Stadium · Los Angeles",         date:"Jun 18", price:480, avg:592, chg:+22},
+    {id:12, name:"Morocco vs Scotland",          venue:"MetLife Stadium · New York",         date:"Jun 22", price:340, avg:415, chg:+10},
+  ]},
+  {label:"Group D", matches:[
+    {id:13, name:"USA vs Paraguay",              venue:"SoFi Stadium · Los Angeles",         date:"Jun 12", price:445, avg:555, chg:+28},
+    {id:14, name:"Australia vs Turkey",          venue:"Lumen Field · Seattle",              date:"Jun 12", price:195, avg:240, chg:-4},
+    {id:15, name:"USA vs Australia",             venue:"Lumen Field · Seattle",              date:"Jun 19", price:390, avg:485, chg:+15},
+    {id:16, name:"Paraguay vs Turkey",           venue:"AT&T Stadium · Dallas",              date:"Jun 25", price:168, avg:205, chg:0},
+  ]},
+  {label:"Group E", matches:[
+    {id:17, name:"Germany vs Curacao",           venue:"Lincoln Financial · Philadelphia",   date:"Jun 13", price:380, avg:460, chg:+20},
+    {id:18, name:"Ivory Coast vs Ecuador",       venue:"Hard Rock Stadium · Miami",          date:"Jun 13", price:210, avg:258, chg:-6},
+    {id:19, name:"Germany vs Ivory Coast",       venue:"Hard Rock Stadium · Miami",          date:"Jun 18", price:355, avg:432, chg:+12},
+    {id:20, name:"Ecuador vs Curacao",           venue:"Lincoln Financial · Philadelphia",   date:"Jun 22", price:185, avg:225, chg:0},
+  ]},
+  {label:"Group F", matches:[
+    {id:21, name:"Netherlands vs Sweden",        venue:"Gillette Stadium · Boston",          date:"Jun 14", price:320, avg:395, chg:+14},
+    {id:22, name:"Japan vs Tunisia",             venue:"Arrowhead Stadium · Kansas City",    date:"Jun 14", price:248, avg:305, chg:-9},
+    {id:23, name:"Netherlands vs Japan",         venue:"Arrowhead Stadium · Kansas City",    date:"Jun 20", price:298, avg:368, chg:+18},
+    {id:24, name:"Tunisia vs Sweden",            venue:"Gillette Stadium · Boston",          date:"Jun 24", price:178, avg:218, chg:0},
+  ]},
+  {label:"Group G", matches:[
+    {id:25, name:"Belgium vs Egypt",             venue:"AT&T Stadium · Dallas",              date:"Jun 15", price:295, avg:362, chg:+10},
+    {id:26, name:"IR Iran vs New Zealand",       venue:"Arrowhead Stadium · Kansas City",    date:"Jun 15", price:168, avg:205, chg:-3},
+    {id:27, name:"Belgium vs IR Iran",           venue:"Hard Rock Stadium · Miami",          date:"Jun 20", price:272, avg:335, chg:+8},
+    {id:28, name:"Egypt vs New Zealand",         venue:"AT&T Stadium · Dallas",              date:"Jun 24", price:155, avg:190, chg:0},
+  ]},
+  {label:"Group H", matches:[
+    {id:29, name:"Spain vs Cabo Verde",          venue:"MetLife Stadium · New York",         date:"Jun 15", price:445, avg:548, chg:+25},
+    {id:30, name:"Saudi Arabia vs Uruguay",      venue:"Lumen Field · Seattle",              date:"Jun 15", price:225, avg:278, chg:-5},
+    {id:31, name:"Spain vs Saudi Arabia",        venue:"SoFi Stadium · Los Angeles",         date:"Jun 20", price:415, avg:512, chg:+18},
+    {id:32, name:"Uruguay vs Cabo Verde",        venue:"MetLife Stadium · New York",         date:"Jun 24", price:248, avg:305, chg:+6},
+  ]},
+  {label:"Group I", matches:[
+    {id:33, name:"France vs Iraq",               venue:"MetLife Stadium · New York",         date:"Jun 16", price:520, avg:642, chg:+32},
+    {id:34, name:"Senegal vs Norway",            venue:"Lincoln Financial · Philadelphia",   date:"Jun 16", price:215, avg:265, chg:-4},
+    {id:35, name:"France vs Senegal",            venue:"SoFi Stadium · Los Angeles",         date:"Jun 21", price:488, avg:602, chg:+20},
+    {id:36, name:"Norway vs Iraq",               venue:"MetLife Stadium · New York",         date:"Jun 25", price:285, avg:350, chg:+8},
+  ]},
+  {label:"Group J", matches:[
+    {id:37, name:"Argentina vs Algeria",         venue:"MetLife Stadium · New York",         date:"Jun 16", price:580, avg:720, chg:+40},
+    {id:38, name:"Austria vs Jordan",            venue:"AT&T Stadium · Dallas",              date:"Jun 16", price:195, avg:240, chg:+5},
+    {id:39, name:"Argentina vs Austria",         venue:"Hard Rock Stadium · Miami",          date:"Jun 21", price:545, avg:675, chg:+25},
+    {id:40, name:"Algeria vs Jordan",            venue:"AT&T Stadium · Dallas",              date:"Jun 25", price:168, avg:205, chg:-3},
+  ]},
+  {label:"Group K", matches:[
+    {id:41, name:"Portugal vs DR Congo",         venue:"Lincoln Financial · Philadelphia",   date:"Jun 17", price:465, avg:575, chg:+28},
+    {id:42, name:"Uzbekistan vs Colombia",       venue:"Lumen Field · Seattle",              date:"Jun 17", price:198, avg:245, chg:-6},
+    {id:43, name:"Portugal vs Uzbekistan",       venue:"Hard Rock Stadium · Miami",          date:"Jun 22", price:435, avg:538, chg:+18},
+    {id:44, name:"Colombia vs DR Congo",         venue:"Lincoln Financial · Philadelphia",   date:"Jun 26", price:280, avg:345, chg:+10},
+  ]},
+  {label:"Group L", matches:[
+    {id:45, name:"England vs Croatia",           venue:"MetLife Stadium · New York",         date:"Jun 17", price:495, avg:610, chg:+30},
+    {id:46, name:"Ghana vs Panama",              venue:"Lincoln Financial · Philadelphia",   date:"Jun 17", price:175, avg:215, chg:-4},
+    {id:47, name:"England vs Ghana",             venue:"Lincoln Financial · Philadelphia",   date:"Jun 22", price:460, avg:570, chg:+18},
+    {id:48, name:"Croatia vs Panama",            venue:"MetLife Stadium · New York",         date:"Jun 26", price:285, avg:350, chg:0},
+  ]},
+  {label:"Knockout rounds (TBD)", matches:[
+    {id:49, name:"Round of 32 — TBD",            venue:"Various US venues",                  date:"Jul 1–5",   price:480, avg:590, chg:+22},
+    {id:50, name:"Round of 16 — TBD",            venue:"Various US venues",                  date:"Jul 6–9",   price:680, avg:840, chg:+35},
+    {id:51, name:"Quarter Final — TBD",          venue:"US venues",                          date:"Jul 9–10",  price:820, avg:1010,chg:+45},
+    {id:52, name:"Semi Final — TBD",             venue:"US venues",                          date:"Jul 14–15", price:1080,avg:1340,chg:+65},
+    {id:53, name:"World Cup Final",              venue:"MetLife Stadium · New York",         date:"Jul 19",    price:1420,avg:1780,chg:+95},
+  ]},
+];
+/* ── LOAD REAL PRICES FROM API ────────────────────────────────────── */
+async function loadRealPrices() {
+  try {
+    const res = await fetch(API + '/api/events');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    let updates = 0;
+    data.events.forEach(apiEvent => {
+      if (!apiEvent.lowest_price) return;
+      const apiName = apiEvent.name.toLowerCase();
+      const apiWords = new Set(apiName.replace(/[^a-z\s]/g, '').split(/\s+/));
+      GROUPS.forEach(group => {
+        group.matches.forEach(match => {
+          const matchName = match.name.toLowerCase();
+          const matchWords = new Set(matchName.replace(/[^a-z\s]/g, '').split(/\s+/));
+          let overlap = 0;
+          matchWords.forEach(w => { if (apiWords.has(w) && w.length > 2) overlap++; });
+          if (overlap >= 2) {
+            const oldPrice = match.price;
+            match.price = Math.round(apiEvent.lowest_price);
+            match.avg   = Math.round(apiEvent.average_price || apiEvent.lowest_price * 1.25);
+            match.chg   = Math.round(apiEvent.lowest_price - oldPrice);
+            updates++;
+          }
+        });
+      });
+    });
+    console.log('Loaded real prices: ' + updates + ' matches updated');
+    renderMatchSections();
+    document.getElementById('last-fetch-pill').textContent = 'just now';
+  } catch(e) {
+    console.warn('Could not load real prices, using demo data:', e.message);
+  }
+}
+
+const allMatches = GROUPS.flatMap(g => g.matches.map(m => ({...m, group:g.label})));
+let myAlerts = [];
+let selectedId = null;
+
+/* CLOCK */
+(function tick(){
+  const n=new Date(), p=v=>String(v).padStart(2,'0');
+  const el=document.getElementById('utc-clock');
+  if(el) el.textContent=p(n.getUTCHours())+':'+p(n.getUTCMinutes())+':'+p(n.getUTCSeconds())+' UTC';
+  setTimeout(tick,1000);
+})();
+
+function showTab(name){
+  ['prices','alert','myalerts','email','reviews'].forEach(t=>{
+    document.getElementById('page-'+t).classList.toggle('active',t===name);
+    document.getElementById('tab-'+t).classList.toggle('active',t===name);
+  });
+}
+
+function renderMatchSections(){
+  const el=document.getElementById('match-sections');
+  el.innerHTML=GROUPS.map(g=>`
+    <div class="group-block">
+      <div class="group-label">${g.label}</div>
+      <div class="match-table">
+        <div class="match-thead">
+          <div class="th">Teams &amp; venue</div>
+          <div class="th">Date</div>
+          <div class="th">Low price</div>
+          <div class="th">Avg price</div>
+          <div class="th">Change</div>
+          <div class="th"></div>
+        </div>
+        ${g.matches.map(m=>{
+          const chg=m.chg||0;
+          const chgHtml=chg>0?`<span class="chg-up">+$${chg}</span>`:
+                        chg<0?`<span class="chg-dn">-$${Math.abs(chg)}</span>`:
+                        `<span class="chg-fl">—</span>`;
+          const armed=myAlerts.some(a=>a.matchId===m.id);
+          const sel=selectedId===m.id;
+          return `<div class="match-row${sel?' selected':''}" onclick="selectMatch(${m.id})">
+            <div class="td" style="flex-direction:column;align-items:flex-start;gap:2px">
+              <div class="match-name">${m.name}</div>
+              <div class="match-meta">${m.venue}</div>
+            </div>
+            <div class="td" style="font-size:12px;color:var(--k3);font-weight:500">${m.date}</div>
+            <div class="td"><span class="price-val">$${m.price}</span></div>
+            <div class="td"><span class="avg-val">$${m.avg}</span></div>
+            <div class="td">${chgHtml}</div>
+            <div class="td">
+              <button class="set-btn${armed?' armed':''}"
+                onclick="event.stopPropagation();selectMatch(${m.id});showTab('alert')">
+                ${armed?'Armed':'Set alert'}
+              </button>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  /* populate match select */
+  const sel=document.getElementById('f-match');
+  sel.innerHTML='<option value="">Select a match...</option>'
+    +GROUPS.map(g=>`<optgroup label="${g.label}">`
+      +g.matches.map(m=>`<option value="${m.id}">${m.name} · ${m.date}</option>`).join('')
+      +`</optgroup>`).join('');
+  if(selectedId) sel.value=selectedId;
+
+  /* update stats */
+  const prices=allMatches.map(m=>m.price).filter(Boolean);
+  document.getElementById('stat-low').textContent=Math.min(...prices);
+  document.getElementById('last-fetch').textContent=new Date().toLocaleTimeString();
+}
+
+function selectMatch(id){
+  selectedId=id;
+  document.getElementById('f-match').value=id;
+  renderMatchSections();
+}
+
+/* RANGE SLIDER */
+function updateRange(){
+  let mn=parseInt(document.getElementById('rmin').value);
+  let mx=parseInt(document.getElementById('rmax').value);
+  const GAP=50;
+  if(mn>mx-GAP){
+    if(document.activeElement.id==='rmin') mn=mx-GAP;
+    else mx=mn+GAP;
+    document.getElementById('rmin').value=mn;
+    document.getElementById('rmax').value=mx;
+  }
+  document.getElementById('rmin-out').textContent=mn;
+  document.getElementById('rmax-out').textContent=mx;
+  const pct=v=>((v-60)/(2500-60)*100).toFixed(2)+'%';
+  const fill=document.getElementById('rfill');
+  fill.style.left=pct(mn);
+  fill.style.width=(((mx-mn)/(2500-60))*100).toFixed(2)+'%';
+}
+document.getElementById('rmin').addEventListener('input',updateRange);
+document.getElementById('rmax').addEventListener('input',updateRange);
+updateRange();
+
+/* CREATE ALERT */
+async function createAlert(){
+  const email  =document.getElementById('f-email').value.trim();
+  const matchId=parseInt(document.getElementById('f-match').value);
+  const min    =parseInt(document.getElementById('rmin').value);
+  const max    =parseInt(document.getElementById('rmax').value);
+  const cat    =document.getElementById('f-cat').value;
+  const toast  =document.getElementById('form-toast');
+  const showToast=(msg,ok=false)=>{
+    toast.textContent=msg;
+    toast.className='toast show '+(ok?'ok':'err');
+    setTimeout(()=>toast.className='toast',5000);
+  };
+  if(!email||!email.includes('@')) return showToast('Please enter a valid email address.');
+  if(!matchId) return showToast('Please select a match.');
+  if(min>=max)  return showToast('Min price must be lower than max price.');
+  const btn=document.getElementById('submit-btn');
+  btn.textContent='Creating...';
+  btn.disabled=true;
+  try{
+    const res=await fetch(API+'/api/alerts',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,event_id:matchId,min_price:min,max_price:max,category:cat})
+    });
+    const data=await res.json();
+    if(res.ok){
+      myAlerts.push({matchId,email,min,max});
+      renderMatchSections();
+      document.getElementById('stat-alerts').textContent=myAlerts.length;
+      showToast(`Alert set for ${data.event_name}. Confirmation sent to ${email}.`,true);
+    } else showToast(data.detail||'Something went wrong.');
+  }catch{
+    const m=allMatches.find(x=>x.id===matchId);
+    myAlerts.push({matchId,email,min,max});
+    renderMatchSections();
+    document.getElementById('stat-alerts').textContent=myAlerts.length;
+    showToast(`Alert saved for ${m?.name}. Connect the backend to send real emails.`,true);
+  }finally{
+    btn.textContent='Create price alert';
+    btn.disabled=false;
+  }
+}
+
+/* MY ALERTS */
+async function loadMyAlerts(){
+  const email=document.getElementById('lookup-email').value.trim();
+  const wrap=document.getElementById('my-alerts-wrap');
+  if(!email||!email.includes('@')){wrap.innerHTML='<div class="empty">Please enter a valid email address</div>';return;}
+  wrap.innerHTML='<div class="empty"><span class="spinner"></span>&nbsp; Loading...</div>';
+  let list=[];
+  try{
+    const res=await fetch(API+'/api/alerts/'+encodeURIComponent(email));
+    const data=await res.json();
+    list=data.alerts||[];
+  }catch{
+    list=myAlerts.filter(a=>a.email===email).map((a,i)=>({...a,id:i,event_id:a.matchId,min_price:a.min,max_price:a.max}));
+  }
+  if(!list.length){wrap.innerHTML='<div class="empty">No alerts found for this email address</div>';return;}
+  const rows=list.map((a,i)=>{
+    const m=allMatches.find(x=>x.id===(a.event_id||a.matchId));
+    const inRange=m&&m.price>=a.min_price&&m.price<=a.max_price;
+    return `<div class="at-row">
+      <div class="at-cell" style="font-weight:500;font-size:12px">${m?.name||'Unknown match'}</div>
+      <div class="at-cell">$${Math.round(a.min_price)}</div>
+      <div class="at-cell">$${Math.round(a.max_price)}</div>
+      <div class="at-cell"><span class="chip ${inRange?'chip-hit':'chip-watch'}">${inRange?'In range':'Watching'}</span></div>
+      <div class="at-cell"><button class="del-btn" onclick="removeAlert(${a.id||i},'${email}')">Remove</button></div>
+    </div>`;
+  }).join('');
+  wrap.innerHTML=`<div class="at-table">
+    <div class="at-head">
+      <div class="at-cell" style="font-size:11px;font-weight:500;color:var(--k3)">Match</div>
+      <div class="at-cell" style="font-size:11px;font-weight:500;color:var(--k3)">Min</div>
+      <div class="at-cell" style="font-size:11px;font-weight:500;color:var(--k3)">Max</div>
+      <div class="at-cell" style="font-size:11px;font-weight:500;color:var(--k3)">Status</div>
+      <div class="at-cell"></div>
+    </div>${rows}</div>`;
+}
+
+async function removeAlert(id,email){
+  try{await fetch(API+'/api/alerts/'+id,{method:'DELETE'});}catch{}
+  myAlerts=myAlerts.filter((_,i)=>i!==id);
+  document.getElementById('stat-alerts').textContent=myAlerts.length;
+  loadMyAlerts();
+}
+
+
+/* ── REVIEWS ──────────────────────────────────────────────────────── */
+const AVATAR_COLORS = ['#003087','#1A6B3C','#7C3AED','#B45309','#0369A1','#DC2626'];
+let pickedStars = 0;
+
+const DEMO_REVIEWS = [
+  {id:'d1', name:'Marcus T.', initials:'MT', color:AVATAR_COLORS[0], stars:5, match:'England vs Croatia', text:'Got the alert at 2am — ticket was $312, dropped to $198 which was right in my range. Booked instantly. Absolute lifesaver, would have missed it completely.', date:'May 12, 2026', isDemo:true},
+  {id:'d2', name:'Aisha R.', initials:'AR', color:AVATAR_COLORS[1], stars:5, match:'World Cup Final', text:'Set my range at $1,100–$1,400 for the final and got an email within hours of a listing dropping in. The direct link made it so fast to buy. Worth every penny.', date:'May 8, 2026', isDemo:true},
+  {id:'d3', name:'Kenji W.', initials:'KW', color:AVATAR_COLORS[2], stars:4, match:'USA vs Paraguay', text:'Really solid tool. I was checking manually every day for weeks — this completely replaced that. Would love a WhatsApp notification option too.', date:'Apr 30, 2026', isDemo:true},
+  {id:'d4', name:'Sofia L.', initials:'SL', color:AVATAR_COLORS[5], stars:5, match:'Germany vs Curacao', text:'Three alerts triggered in one week. Two I booked immediately. The email is clean, gets straight to the point, and the link goes right to the ticket. No friction at all.', date:'Apr 22, 2026', isDemo:true},
+];
+
+let userReviews = JSON.parse(localStorage.getItem('kickoff_reviews') || '[]');
+
+function allReviews() {
+  return [...DEMO_REVIEWS, ...userReviews];
+}
+
+function starsHtml(n, size='14px') {
+  return Array.from({length:5}, (_,i) =>
+    `<span class="${i<n?'star-filled':'star-empty'}" style="font-size:${size}">★</span>`
+  ).join('');
+}
+
+function initials(name) {
+  return name.trim().split(/\s+/).map(w=>w[0].toUpperCase()).slice(0,2).join('');
+}
+
+function renderReviews() {
+  const list   = allReviews();
+  const el     = document.getElementById('reviews-list');
+  const rvSel  = document.getElementById('rv-match');
+
+  // Populate match select in form
+  if (rvSel.options.length <= 1) {
+    GROUPS.forEach(g => {
+      const og = document.createElement('optgroup');
+      og.label = g.label;
+      g.matches.forEach(m => {
+        const o = document.createElement('option');
+        o.value = m.name;
+        o.textContent = m.name;
+        og.appendChild(o);
+      });
+      rvSel.appendChild(og);
+    });
+  }
+
+  // Cards
+  el.innerHTML = list.map(r => `
+    <div class="review-card${r.isDemo?' is-demo':''}">
+      <div class="review-top">
+        <div class="reviewer">
+          <div class="avatar" style="background:${r.color||AVATAR_COLORS[0]}">${r.initials||initials(r.name)}</div>
+          <div>
+            <div class="reviewer-name">${r.name}</div>
+            <div class="reviewer-date">${r.date}</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          <div class="stars">${starsHtml(r.stars)}</div>
+          ${r.isDemo ? '<span class="demo-chip">Demo</span>' : ''}
+        </div>
+      </div>
+      <div class="review-text">${r.text}</div>
+      ${r.match ? `<span class="review-match-tag">🎟 ${r.match}</span>` : ''}
+    </div>
+  `).join('');
+
+  // Summary
+  document.getElementById('review-count').textContent = list.length;
+  const avg = (list.reduce((s,r)=>s+r.stars,0)/list.length).toFixed(1);
+  document.getElementById('avg-score').textContent = avg;
+  document.getElementById('avg-stars').innerHTML = starsHtml(Math.round(avg), '18px');
+  document.getElementById('avg-count').textContent = `Based on ${list.length} review${list.length!==1?'s':''}`;
+
+  // Bars
+  const counts = [5,4,3,2,1].map(s => ({s, n: list.filter(r=>r.stars===s).length}));
+  document.getElementById('rating-bars').innerHTML = counts.map(c => `
+    <div class="bar-row">
+      <div class="bar-lbl">${c.s}★</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${list.length?Math.round(c.n/list.length*100):0}%"></div></div>
+      <div class="bar-count">${c.n}</div>
+    </div>
+  `).join('');
+}
+
+function setStars(n) {
+  pickedStars = n;
+  document.querySelectorAll('.star-pick-btn').forEach(b => {
+    b.classList.toggle('lit', parseInt(b.dataset.v) <= n);
+  });
+}
+
+function submitReview() {
+  const name  = document.getElementById('rv-name').value.trim();
+  const match = document.getElementById('rv-match').value;
+  const text  = document.getElementById('rv-text').value.trim();
+  const toast = document.getElementById('rv-toast');
+
+  const showToast = (msg, ok=false) => {
+    toast.textContent = msg;
+    toast.className = 'toast show ' + (ok?'ok':'err');
+    setTimeout(()=>toast.className='toast', 4000);
+  };
+
+  if (!name)         return showToast('Please enter your name.');
+  if (!pickedStars)  return showToast('Please select a star rating.');
+  if (text.length < 20) return showToast('Review must be at least 20 characters.');
+
+  const btn = document.getElementById('rv-submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Posting...';
+
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const now = new Date();
+  const review = {
+    id: 'u' + Date.now(),
+    name,
+    initials: initials(name),
+    color: AVATAR_COLORS[Math.floor(Math.random()*AVATAR_COLORS.length)],
+    stars: pickedStars,
+    match,
+    text,
+    date: `${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`,
+    isDemo: false,
+  };
+
+  userReviews.unshift(review);
+  localStorage.setItem('kickoff_reviews', JSON.stringify(userReviews));
+  renderReviews();
+
+  // Reset form
+  document.getElementById('rv-name').value = '';
+  document.getElementById('rv-match').value = '';
+  document.getElementById('rv-text').value = '';
+  document.getElementById('rv-chars').textContent = '0/400';
+  setStars(0);
+  pickedStars = 0;
+  showToast('Review posted — thank you!', true);
+
+  setTimeout(() => { btn.disabled=false; btn.textContent='Post review'; }, 1000);
+}
+
+/* BOOT */
+renderMatchSections();
+loadRealPrices();
+setInterval(loadRealPrices, 15*60*1000);
+renderReviews();
+setInterval(()=>{
+  document.getElementById('last-fetch').textContent=new Date().toLocaleTimeString();
+}, 15*60*1000);
+</script>
+
+<!-- REVIEWS TAB -->
+<div class="page" id="page-reviews">
+  <div class="sec-hdr">
+    <div class="sec-title">User reviews</div>
+    <div class="sec-sub"><span id="review-count">0</span> reviews from verified users</div>
+  </div>
+
+  <div class="reviews-layout">
+    <!-- LEFT: review cards -->
+    <div>
+      <div class="reviews-grid" id="reviews-list"></div>
+    </div>
+
+    <!-- RIGHT: summary + form -->
+    <div>
+      <!-- Rating summary -->
+      <div class="summary-card">
+        <div class="summary-title">Overall rating</div>
+        <div class="summary-score-row">
+          <div class="big-score" id="avg-score">—</div>
+          <div class="score-detail">
+            <div class="score-stars" id="avg-stars">☆☆☆☆☆</div>
+            <div class="score-count" id="avg-count">No reviews yet</div>
+          </div>
+        </div>
+        <div class="bar-rows" id="rating-bars"></div>
+      </div>
+
+      <!-- Submit form -->
+      <div class="form-card">
+        <div class="form-card-hdr">
+          <div class="form-card-hdr-title">Leave a review</div>
+          <div class="form-card-hdr-sub">Share your experience with KickOff Alerts</div>
+        </div>
+        <div class="form-card-body">
+          <div class="field">
+            <label class="field-label">Your name</label>
+            <input type="text" id="rv-name" placeholder="e.g. Prasid B." maxlength="40">
+          </div>
+          <div class="field">
+            <label class="field-label">Match you tracked</label>
+            <select id="rv-match">
+              <option value="">Select a match (optional)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">Rating</label>
+            <div class="star-picker" id="star-picker">
+              <button class="star-pick-btn" data-v="1" onclick="setStars(1)">★</button>
+              <button class="star-pick-btn" data-v="2" onclick="setStars(2)">★</button>
+              <button class="star-pick-btn" data-v="3" onclick="setStars(3)">★</button>
+              <button class="star-pick-btn" data-v="4" onclick="setStars(4)">★</button>
+              <button class="star-pick-btn" data-v="5" onclick="setStars(5)">★</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Your review</label>
+            <textarea id="rv-text" rows="4" maxlength="400"
+              placeholder="How was your experience? Did you get an alert in time?"
+              oninput="document.getElementById('rv-chars').textContent=this.value.length+'/400'"
+              style="width:100%;border:1px solid var(--g4);background:var(--w);font-family:var(--font);font-size:13px;padding:9px 12px;color:var(--k);outline:none;border-radius:var(--r);resize:vertical;transition:all .12s;line-height:1.6"
+              onfocus="this.style.borderColor='var(--fifa-blue)';this.style.boxShadow='0 0 0 3px rgba(0,48,135,.08)'"
+              onblur="this.style.borderColor='var(--g4)';this.style.boxShadow='none'"></textarea>
+            <div class="char-count" id="rv-chars">0/400</div>
+          </div>
+          <button class="review-submit-btn" id="rv-submit-btn" onclick="submitReview()">Post review</button>
+          <div class="toast" id="rv-toast"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

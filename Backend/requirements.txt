@@ -1,0 +1,11 @@
+requests==2.31.0          # Makes HTTP calls to SeatGeek API
+psycopg2-binary==2.9.9    # Connects Python to PostgreSQL
+python-dotenv==1.0.0      # Reads your .env file safely
+apscheduler==3.10.4       # Runs jobs on a timer (24/7 scheduler)
+twilio==8.10.0            # Sends SMS notifications
+sendgrid==6.11.0          # Sends email notifications
+fastapi==0.111.0
+uvicorn==0.29.0
+pydantic==2.7.1
+jinja2==3.1.4
+python-multipart==0.0.9
