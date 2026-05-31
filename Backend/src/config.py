@@ -20,8 +20,6 @@ def _require(name: str) -> str:
 # Database
 DATABASE_URL = _require("DATABASE_URL")
 
-# SeatGeek API
-SEATGEEK_CLIENT_ID = _require("SEATGEEK_CLIENT_ID")
 
 # Twilio (SMS) — these are optional at startup, required when sending SMS
 TWILIO_ACCOUNT_SID  = os.getenv("TWILIO_ACCOUNT_SID", "")

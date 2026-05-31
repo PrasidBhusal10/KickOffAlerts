@@ -1,12 +1,3 @@
-"""
-main.py — Entry point for KickOff Alerts.
-
-Usage:
-    python main.py                        → API server + scheduler (normal mode)
-    python main.py --once                 → one fetch + alert cycle (testing)
-    python main.py --api-only             → API server only, no scheduler
-    python main.py --search "Brazil vs"   → find SeatGeek event IDs
-"""
 
 import sys
 import threading
@@ -15,7 +6,10 @@ import uvicorn
 
 def run_api():
     import uvicorn
-    uvicorn.run("src.api:app", host="0.0.0.0", port=8001, reload=False)
+    import os
+    
+    port = int(os.getenv("PORT", 8001))
+    uvicorn.run("src.api:app", host="0.0.0.0", port=port, reload=False)
 
 
 def run_scheduler():
