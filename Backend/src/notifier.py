@@ -1,7 +1,3 @@
-"""
-notifier.py — Sends branded HTML emails via SendGrid.
-Calls email_templates.py for the HTML design.
-"""
 
 from src.config import SENDGRID_API_KEY, SENDGRID_FROM_EMAIL
 

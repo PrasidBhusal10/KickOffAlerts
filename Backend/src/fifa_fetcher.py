@@ -1,14 +1,3 @@
-"""
-fifa_fetcher.py — Scrapes real live ticket prices from fifacollect.info
-which aggregates listings from the official FIFA Collect marketplace.
-
-Real data confirmed:
-  - Mexico vs South Africa CAT1: $5,530 starting price
-  - Korea Republic vs Czech Republic CAT2: $1,800
-  - Canada vs Bosnia CAT3: $975
-  etc.
-"""
-
 import requests
 import re
 from bs4 import BeautifulSoup
@@ -22,8 +11,6 @@ HEADERS = {
 }
 
 BASE_URL = "https://www.fifacollect.info/tickets/world-cup-2026/listings"
-
-
 def parse_price(text: str) -> float | None:
     """Extract a float price from text like '$5,530.00' or '$1,800'."""
     if not text:
@@ -33,13 +20,7 @@ def parse_price(text: str) -> float | None:
         return float(cleaned) if cleaned else None
     except ValueError:
         return None
-
-
 def scrape_all_listings() -> list:
-    """
-    Scrape all ticket listings from fifacollect.info in one request.
-    Returns list of dicts with match info and prices.
-    """
     print(f"  [FIFA Scraper] Fetching listings from fifacollect.info...")
 
     try:
@@ -151,10 +132,6 @@ def scrape_all_listings() -> list:
 
 
 def get_lowest_price_per_match(listings: list) -> dict:
-    """
-    From all listings, find the lowest starting price per match.
-    Returns dict: {match_name: {lowest_price, listing_count, ticket_url}}
-    """
     match_prices = {}
     for item in listings:
         name = item["match_name"]
@@ -175,19 +152,12 @@ def get_lowest_price_per_match(listings: list) -> dict:
 
 
 def fetch_and_store_all():
-    """
-    Main function called by the scheduler every 15 minutes.
-    Scrapes fifacollect.info, matches events to our DB, stores price snapshots.
-    """
     print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Starting FIFA Collect price fetch...")
-
     from src import database as db
-
     listings = scrape_all_listings()
     if not listings:
         print("  No listings found — site may be down or structure changed.")
         return
-
     match_prices = get_lowest_price_per_match(listings)
     events = db.get_all_events()
 
